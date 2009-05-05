@@ -1,0 +1,32 @@
+Concerns
+========
+
+The idea with this plugin is that you have a RAILS_ROOT/app/concerns directory containing subdirectories where each sub directory represents a certain concern or aspect of your application. A concern may be implemented with code that spans across several parts of the MVC architecture. For example, you may have a few controller and helper methods related to accepting the terms of service of your website and you want to collect all those methods in one place. You
+would then create a terms_of_service directory in the concerns directory with an init.rb file in it. The goal here is to make the application code base more modularized.
+
+The difference between concerns and plugins is that concerns are application specific and are not intended
+for reuse across applications. Concerns are typically closely tied to your application.
+
+Example
+=======
+
+You might have the file app/concerns/terms_of_service/init.rb with something like this:
+
+module TermsOfService
+  module ControllerMethods
+    def terms_accepted(options = {})
+      ... implementation of method here ...
+    end    
+  end
+  
+  module HelperMethods
+    def terms_of_service_checkbox(options = {})
+      ... implementation of method here ...
+    end
+  end
+end
+
+::ActionController::Base.send(:include, TermsOfService::ControllerMethods)
+::ActionView::Base.send(:include, TermsOfService::HelperMethods)
+
+Copyright (c) 2008 Peter Marklund, released under the MIT license
